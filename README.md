@@ -17,6 +17,67 @@ The GraphQL schema is https://github.com/gothinkster/spring-boot-realworld-examp
 ![](graphql-schema.png)
 
 And this implementation is using [dgs-framework](https://github.com/Netflix/dgs-framework) which is a quite new java graphql server framework.
+
+# Content Moderation System
+
+This application includes a comprehensive content moderation system that allows users to report inappropriate content and provides admin tools for managing reports.
+
+## Features
+
+- **Report Articles & Comments**: Users can report articles and comments for spam, harassment, or inappropriate content
+- **Admin Management**: Admin endpoints to view, filter, and update report statuses
+- **Multiple Report Reasons**: Support for SPAM, HARASSMENT, and INAPPROPRIATE_CONTENT
+- **Dual API Support**: Available through both REST and GraphQL APIs
+- **Status Tracking**: Reports have PENDING, REVIEWED, and DISMISSED statuses
+
+## REST API Endpoints
+
+### User Reporting
+- `POST /reports/articles/{slug}` - Report an article
+- `POST /reports/articles/{slug}/comments/{commentId}` - Report a comment
+
+### Admin Management
+- `GET /admin/reports` - View all reports (supports `?status=PENDING` filtering)
+- `PUT /admin/reports/{id}/status?status=REVIEWED` - Update report status
+
+## GraphQL Mutations
+
+```graphql
+# Report an article
+mutation {
+  reportArticle(slug: "article-slug", reason: SPAM) {
+    report {
+      id
+      reason
+      status
+      createdAt
+    }
+  }
+}
+
+# Report a comment
+mutation {
+  reportComment(slug: "article-slug", commentId: "comment-id", reason: HARASSMENT) {
+    report {
+      id
+      reason
+      status
+      createdAt
+    }
+  }
+}
+```
+
+## Testing
+
+A comprehensive testing script is provided to demonstrate the content moderation functionality:
+
+```bash
+./test_content_moderation.sh
+```
+
+This script creates a test user "Muthu" with 4 sample articles and demonstrates the complete reporting workflow including user reporting and admin management.
+
 # How it works
 
 The application uses Spring Boot (Web, Mybatis).
