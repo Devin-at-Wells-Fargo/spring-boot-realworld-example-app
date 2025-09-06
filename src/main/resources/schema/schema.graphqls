@@ -36,6 +36,10 @@ type Mutation {
     ### Comment
     addComment(slug: String!, body: String!): CommentPayload
     deleteComment(slug: String!, id: ID!): DeletionStatus
+
+    ### Report
+    reportArticle(slug: String!, reason: ReportReason!): ReportPayload
+    reportComment(slug: String!, commentId: ID!, reason: ReportReason!): ReportPayload
 }
 
 schema {
@@ -173,5 +177,29 @@ type UserPayload {
 
 type ProfilePayload {
     profile: Profile
+}
+
+### Report
+type Report {
+    id: ID!
+    reason: ReportReason!
+    status: ReportStatus!
+    createdAt: String!
+}
+
+enum ReportReason {
+    SPAM
+    HARASSMENT
+    INAPPROPRIATE_CONTENT
+}
+
+enum ReportStatus {
+    PENDING
+    REVIEWED
+    DISMISSED
+}
+
+type ReportPayload {
+    report: Report
 }
 

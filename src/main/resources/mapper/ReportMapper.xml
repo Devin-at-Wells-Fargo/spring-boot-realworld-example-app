@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.spring.infrastructure.mybatis.mapper.ReportMapper">
+    <insert id="insert">
+        insert into reports(id, reporter_id, reported_content_type, reported_content_id, reason, status, created_at, updated_at)
+        values (
+          #{report.id},
+          #{report.reporterId},
+          #{report.reportedContentType},
+          #{report.reportedContentId},
+          #{report.reason},
+          #{report.status},
+          #{report.createdAt},
+          #{report.updatedAt}
+        )
+    </insert>
+    
+    <select id="findById" resultMap="report">
+        select
+          id reportId,
+          reporter_id reportReporterId,
+          reported_content_type reportContentType,
+          reported_content_id reportContentId,
+          reason reportReason,
+          status reportStatus,
+          created_at reportCreatedAt,
+          updated_at reportUpdatedAt
+        from reports
+        where id = #{id}
+    </select>
+    
+    <select id="findAll" resultMap="report">
+        select
+          id reportId,
+          reporter_id reportReporterId,
+          reported_content_type reportContentType,
+          reported_content_id reportContentId,
+          reason reportReason,
+          status reportStatus,
+          created_at reportCreatedAt,
+          updated_at reportUpdatedAt
+        from reports
+        order by created_at desc
+    </select>
+    
+    <select id="findByStatus" resultMap="report">
+        select
+          id reportId,
+          reporter_id reportReporterId,
+          reported_content_type reportContentType,
+          reported_content_id reportContentId,
+          reason reportReason,
+          status reportStatus,
+          created_at reportCreatedAt,
+          updated_at reportUpdatedAt
+        from reports
+        where status = #{status}
+        order by created_at desc
+    </select>
+    
+    <update id="updateStatus">
+        update reports set status = #{status}, updated_at = CURRENT_TIMESTAMP where id = #{id}
+    </update>
+    
+    <resultMap id="report" type="io.spring.core.report.Report">
+        <id column="reportId" property="id"/>
+        <result column="reportReporterId" property="reporterId"/>
+        <result column="reportContentType" property="reportedContentType"/>
+        <result column="reportContentId" property="reportedContentId"/>
+        <result column="reportReason" property="reason"/>
+        <result column="reportStatus" property="status"/>
+        <result column="reportCreatedAt" property="createdAt"/>
+        <result column="reportUpdatedAt" property="updatedAt"/>
+    </resultMap>
+</mapper>
