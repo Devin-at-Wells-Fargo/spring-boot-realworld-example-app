@@ -37,8 +37,11 @@ public class ReportsApi {
       @PathVariable("slug") String slug,
       @AuthenticationPrincipal User user,
       @Valid @RequestBody ReportArticleParam reportParam) {
-    Article article = articleRepository.findBySlug(slug).orElseThrow(ResourceNotFoundException::new);
-    Report report = new Report(user.getId(), Report.ContentType.ARTICLE, article.getId(), reportParam.getReason());
+    Article article =
+        articleRepository.findBySlug(slug).orElseThrow(ResourceNotFoundException::new);
+    Report report =
+        new Report(
+            user.getId(), Report.ContentType.ARTICLE, article.getId(), reportParam.getReason());
     reportRepository.save(report);
     return ResponseEntity.status(201).body(reportResponse(report));
   }
@@ -49,9 +52,15 @@ public class ReportsApi {
       @PathVariable("commentId") String commentId,
       @AuthenticationPrincipal User user,
       @Valid @RequestBody ReportCommentParam reportParam) {
-    Article article = articleRepository.findBySlug(slug).orElseThrow(ResourceNotFoundException::new);
-    Comment comment = commentRepository.findById(article.getId(), commentId).orElseThrow(ResourceNotFoundException::new);
-    Report report = new Report(user.getId(), Report.ContentType.COMMENT, comment.getId(), reportParam.getReason());
+    Article article =
+        articleRepository.findBySlug(slug).orElseThrow(ResourceNotFoundException::new);
+    Comment comment =
+        commentRepository
+            .findById(article.getId(), commentId)
+            .orElseThrow(ResourceNotFoundException::new);
+    Report report =
+        new Report(
+            user.getId(), Report.ContentType.COMMENT, comment.getId(), reportParam.getReason());
     reportRepository.save(report);
     return ResponseEntity.status(201).body(reportResponse(report));
   }
@@ -59,14 +68,16 @@ public class ReportsApi {
   private Map<String, Object> reportResponse(Report report) {
     return new HashMap<String, Object>() {
       {
-        put("report", new HashMap<String, Object>() {
-          {
-            put("id", report.getId());
-            put("reason", report.getReason());
-            put("status", report.getStatus());
-            put("createdAt", report.getCreatedAt());
-          }
-        });
+        put(
+            "report",
+            new HashMap<String, Object>() {
+              {
+                put("id", report.getId());
+                put("reason", report.getReason());
+                put("status", report.getStatus());
+                put("createdAt", report.getCreatedAt());
+              }
+            });
       }
     };
   }

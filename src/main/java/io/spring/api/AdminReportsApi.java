@@ -31,8 +31,7 @@ public class AdminReportsApi {
 
   @GetMapping(params = "status")
   public ResponseEntity<?> getReportsByStatus(
-      @RequestParam("status") Report.ReportStatus status,
-      @AuthenticationPrincipal User user) {
+      @RequestParam("status") Report.ReportStatus status, @AuthenticationPrincipal User user) {
     List<Report> reports = reportRepository.findByStatus(status);
     return ResponseEntity.ok(reportsResponse(reports));
   }

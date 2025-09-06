@@ -31,14 +31,19 @@ public class Report {
   }
 
   public enum ContentType {
-    ARTICLE, COMMENT
+    ARTICLE,
+    COMMENT
   }
 
   public enum ReportReason {
-    SPAM, HARASSMENT, INAPPROPRIATE_CONTENT
+    SPAM,
+    HARASSMENT,
+    INAPPROPRIATE_CONTENT
   }
 
   public enum ReportStatus {
-    PENDING, REVIEWED, DISMISSED
+    PENDING,
+    REVIEWED,
+    DISMISSED
   }
 }

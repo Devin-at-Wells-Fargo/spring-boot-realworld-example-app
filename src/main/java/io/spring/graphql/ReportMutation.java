@@ -27,13 +27,13 @@ public class ReportMutation {
 
   @DgsData(parentType = MUTATION.TYPE_NAME, field = MUTATION.ReportArticle)
   public DataFetcherResult<ReportPayload> reportArticle(
-      @InputArgument("slug") String slug, 
-      @InputArgument("reason") Report.ReportReason reason) {
+      @InputArgument("slug") String slug, @InputArgument("reason") Report.ReportReason reason) {
     User user = SecurityUtil.getCurrentUser().orElseThrow(AuthenticationException::new);
-    Article article = articleRepository.findBySlug(slug).orElseThrow(ResourceNotFoundException::new);
+    Article article =
+        articleRepository.findBySlug(slug).orElseThrow(ResourceNotFoundException::new);
     Report report = new Report(user.getId(), Report.ContentType.ARTICLE, article.getId(), reason);
     reportRepository.save(report);
-    
+
     return DataFetcherResult.<ReportPayload>newResult()
         .localContext(report)
         .data(ReportPayload.newBuilder().build())
@@ -43,14 +43,18 @@ public class ReportMutation {
   @DgsData(parentType = MUTATION.TYPE_NAME, field = MUTATION.ReportComment)
   public DataFetcherResult<ReportPayload> reportComment(
       @InputArgument("slug") String slug,
-      @InputArgument("commentId") String commentId, 
+      @InputArgument("commentId") String commentId,
       @InputArgument("reason") Report.ReportReason reason) {
     User user = SecurityUtil.getCurrentUser().orElseThrow(AuthenticationException::new);
-    Article article = articleRepository.findBySlug(slug).orElseThrow(ResourceNotFoundException::new);
-    Comment comment = commentRepository.findById(article.getId(), commentId).orElseThrow(ResourceNotFoundException::new);
+    Article article =
+        articleRepository.findBySlug(slug).orElseThrow(ResourceNotFoundException::new);
+    Comment comment =
+        commentRepository
+            .findById(article.getId(), commentId)
+            .orElseThrow(ResourceNotFoundException::new);
     Report report = new Report(user.getId(), Report.ContentType.COMMENT, comment.getId(), reason);
     reportRepository.save(report);
-    
+
     return DataFetcherResult.<ReportPayload>newResult()
         .localContext(report)
         .data(ReportPayload.newBuilder().build())

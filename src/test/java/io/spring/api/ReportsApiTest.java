@@ -44,20 +44,24 @@ public class ReportsApiTest extends TestWithCurrentUser {
     article = new Article("title", "desc", "body", Arrays.asList("test", "java"), user.getId());
     when(articleRepository.findBySlug(eq(article.getSlug()))).thenReturn(Optional.of(article));
     comment = new Comment("comment", user.getId(), article.getId());
-    when(commentRepository.findById(eq(article.getId()), eq(comment.getId()))).thenReturn(Optional.of(comment));
+    when(commentRepository.findById(eq(article.getId()), eq(comment.getId())))
+        .thenReturn(Optional.of(comment));
   }
 
   @Test
   public void should_report_article_success() throws Exception {
-    Map<String, Object> param = new HashMap<String, Object>() {
-      {
-        put("report", new HashMap<String, Object>() {
+    Map<String, Object> param =
+        new HashMap<String, Object>() {
           {
-            put("reason", "SPAM");
+            put(
+                "report",
+                new HashMap<String, Object>() {
+                  {
+                    put("reason", "SPAM");
+                  }
+                });
           }
-        });
-      }
-    };
+        };
 
     given()
         .contentType("application/json")
@@ -72,15 +76,18 @@ public class ReportsApiTest extends TestWithCurrentUser {
 
   @Test
   public void should_report_comment_success() throws Exception {
-    Map<String, Object> param = new HashMap<String, Object>() {
-      {
-        put("report", new HashMap<String, Object>() {
+    Map<String, Object> param =
+        new HashMap<String, Object>() {
           {
-            put("reason", "HARASSMENT");
+            put(
+                "report",
+                new HashMap<String, Object>() {
+                  {
+                    put("reason", "HARASSMENT");
+                  }
+                });
           }
-        });
-      }
-    };
+        };
 
     given()
         .contentType("application/json")
@@ -95,15 +102,18 @@ public class ReportsApiTest extends TestWithCurrentUser {
 
   @Test
   public void should_get_422_with_null_reason() throws Exception {
-    Map<String, Object> param = new HashMap<String, Object>() {
-      {
-        put("report", new HashMap<String, Object>() {
+    Map<String, Object> param =
+        new HashMap<String, Object>() {
           {
-            put("reason", null);
+            put(
+                "report",
+                new HashMap<String, Object>() {
+                  {
+                    put("reason", null);
+                  }
+                });
           }
-        });
-      }
-    };
+        };
 
     given()
         .contentType("application/json")
@@ -119,16 +129,19 @@ public class ReportsApiTest extends TestWithCurrentUser {
   @Test
   public void should_get_404_when_article_not_found() throws Exception {
     when(articleRepository.findBySlug(eq("nonexistent"))).thenReturn(Optional.empty());
-    
-    Map<String, Object> param = new HashMap<String, Object>() {
-      {
-        put("report", new HashMap<String, Object>() {
+
+    Map<String, Object> param =
+        new HashMap<String, Object>() {
           {
-            put("reason", "SPAM");
+            put(
+                "report",
+                new HashMap<String, Object>() {
+                  {
+                    put("reason", "SPAM");
+                  }
+                });
           }
-        });
-      }
-    };
+        };
 
     given()
         .contentType("application/json")

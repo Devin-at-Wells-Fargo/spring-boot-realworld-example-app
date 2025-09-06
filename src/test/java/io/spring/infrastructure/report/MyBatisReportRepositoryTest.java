@@ -19,7 +19,8 @@ public class MyBatisReportRepositoryTest extends DbTestBase {
 
   @Test
   public void should_save_and_fetch_report() {
-    Report report = new Report("user1", Report.ContentType.ARTICLE, "article1", Report.ReportReason.SPAM);
+    Report report =
+        new Report("user1", Report.ContentType.ARTICLE, "article1", Report.ReportReason.SPAM);
     reportRepository.save(report);
 
     Optional<Report> fetched = reportRepository.findById(report.getId());
@@ -31,8 +32,10 @@ public class MyBatisReportRepositoryTest extends DbTestBase {
 
   @Test
   public void should_find_reports_by_status() {
-    Report report1 = new Report("user1", Report.ContentType.ARTICLE, "article1", Report.ReportReason.SPAM);
-    Report report2 = new Report("user2", Report.ContentType.COMMENT, "comment1", Report.ReportReason.HARASSMENT);
+    Report report1 =
+        new Report("user1", Report.ContentType.ARTICLE, "article1", Report.ReportReason.SPAM);
+    Report report2 =
+        new Report("user2", Report.ContentType.COMMENT, "comment1", Report.ReportReason.HARASSMENT);
     reportRepository.save(report1);
     reportRepository.save(report2);
 
@@ -42,7 +45,8 @@ public class MyBatisReportRepositoryTest extends DbTestBase {
 
   @Test
   public void should_update_report_status() {
-    Report report = new Report("user1", Report.ContentType.ARTICLE, "article1", Report.ReportReason.SPAM);
+    Report report =
+        new Report("user1", Report.ContentType.ARTICLE, "article1", Report.ReportReason.SPAM);
     reportRepository.save(report);
 
     reportRepository.updateStatus(report.getId(), Report.ReportStatus.REVIEWED);
@@ -54,8 +58,10 @@ public class MyBatisReportRepositoryTest extends DbTestBase {
 
   @Test
   public void should_find_all_reports() {
-    Report report1 = new Report("user1", Report.ContentType.ARTICLE, "article1", Report.ReportReason.SPAM);
-    Report report2 = new Report("user2", Report.ContentType.COMMENT, "comment1", Report.ReportReason.HARASSMENT);
+    Report report1 =
+        new Report("user1", Report.ContentType.ARTICLE, "article1", Report.ReportReason.SPAM);
+    Report report2 =
+        new Report("user2", Report.ContentType.COMMENT, "comment1", Report.ReportReason.HARASSMENT);
     reportRepository.save(report1);
     reportRepository.save(report2);
 
@@ -65,16 +71,20 @@ public class MyBatisReportRepositoryTest extends DbTestBase {
 
   @Test
   public void should_handle_different_content_types() {
-    Report articleReport = new Report("user1", Report.ContentType.ARTICLE, "article1", Report.ReportReason.SPAM);
-    Report commentReport = new Report("user1", Report.ContentType.COMMENT, "comment1", Report.ReportReason.HARASSMENT);
-    
+    Report articleReport =
+        new Report("user1", Report.ContentType.ARTICLE, "article1", Report.ReportReason.SPAM);
+    Report commentReport =
+        new Report("user1", Report.ContentType.COMMENT, "comment1", Report.ReportReason.HARASSMENT);
+
     reportRepository.save(articleReport);
     reportRepository.save(commentReport);
 
     Optional<Report> fetchedArticleReport = reportRepository.findById(articleReport.getId());
     Optional<Report> fetchedCommentReport = reportRepository.findById(commentReport.getId());
-    
-    assertThat(fetchedArticleReport.get().getReportedContentType()).isEqualTo(Report.ContentType.ARTICLE);
-    assertThat(fetchedCommentReport.get().getReportedContentType()).isEqualTo(Report.ContentType.COMMENT);
+
+    assertThat(fetchedArticleReport.get().getReportedContentType())
+        .isEqualTo(Report.ContentType.ARTICLE);
+    assertThat(fetchedCommentReport.get().getReportedContentType())
+        .isEqualTo(Report.ContentType.COMMENT);
   }
 }
